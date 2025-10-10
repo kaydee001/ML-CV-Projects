@@ -10,5 +10,26 @@ class SimpleCNN(nn.Module):
         
         self.conv2 = nn.Conv2d(16, 32, 3, padding=1) # input channels (16), output channels (32), 3x3 filter, padding=1
 
+        self.fc1 = nn.Linear(32*8*8, 128)
+        self.fc2  = nn.Linear(128, 10)
+
     def forward(self, x):
-        pass
+        x = self.pool(torch.relu(self.conv1(x)))
+        x = self.pool(torch.relu(self.conv2(x)))
+
+        # flatting from 2d to 1d
+        x = torch.flatten(x, start_dim=1) # flatten everything the "batch" dimension (ie no of images)
+
+        x = torch.relu(self.fc1(x))
+        x = self.fc2(x)
+
+        return x
+
+if __name__ == "__main__":
+    dummy_input = torch.randn(4, 3, 32, 32)
+    model = SimpleCNN()
+    output = model(dummy_input)
+
+    print(f"input shape : {dummy_input.shape}")
+    print(f"output shape : {output.shape}")
+    print(f"output sample : {output[0]}")
