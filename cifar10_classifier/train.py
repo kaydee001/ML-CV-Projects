@@ -39,8 +39,8 @@ def main():
     print(f"model on device: {next(model.parameters()).device}")
 
     def evaluate(model, test_loader, device):
-        # inheriting from nn.Module
-        model.eval()
+        # inheriting from nn.Module -> disables training specific behaviour
+        model.eval() # disabling dropout and fixes batch_norm
 
         correct = 0 # no of correct predictions
         total = 0 # total no of images seen
@@ -55,7 +55,7 @@ def main():
                 outputs = model(images)
 
                 #tracking the stats
-                _, predicted = torch.max(outputs.data, 1)
+                _, predicted = torch.max(outputs, 1)
                 total += labels.size(0)
                 correct += (predicted==labels).sum().item()
 
@@ -65,7 +65,7 @@ def main():
     # training loop
     num_epochs = 5
     for epoch in range(num_epochs):
-        # inheriting from nn.Module
+        # inheriting from nn.Module -> enables training specific behaviour
         model.train()
         
         running_loss = 0.0
@@ -90,7 +90,7 @@ def main():
             # adding the total cumulative loss -> converting loss tensor to python number 
             running_loss += loss.item()
             # ignores the max_value,  
-            _, predicted = torch.max(outputs.data, 1)
+            _, predicted = torch.max(outputs, 1)
             # batch size -> total no of images in the current batch
             total += labels.size(0)
             # counting the no of prediction which match the true labels
@@ -109,6 +109,11 @@ def main():
         test_acc = evaluate(model, test_loader, device)
         print(f"test accuracy : {test_acc:.2f}% \n")
 
+    print("\ntraining complete")
+    from utils import visualize_predicitons, save_model
+    visualize_predicitons(model, test_loader, device, num_images=16)
+
+    save_model(model, 'cifar10_model.pth')
 
 if __name__ == "__main__":
     main()
