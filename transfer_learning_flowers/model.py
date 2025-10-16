@@ -7,7 +7,7 @@ class FlowerClassifier(nn.Module):
         super(FlowerClassifier, self).__init__()
 
         # loading pre trained resnet from imagenet
-        self.model = models.resnet18(pretrained=True)
+        self.model = models.resnet18(weights='IMAGENET1K_V1')
         # no of input features of final layer -> 512 for resnet 
         num_features = self.model.fc.in_features
         # replace final layer -> 1000 imagenet classes => 5 flower classes
