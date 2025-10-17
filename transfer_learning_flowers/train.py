@@ -119,3 +119,7 @@ if __name__ == "__main__":
 
     # saving the model
     save_model(model, args.save_path)
+
+    from visualize import plot_loss_curve
+    plot_loss_curve(loss_history, save_path="loss_curve.png")
+    print(f"training complete")
