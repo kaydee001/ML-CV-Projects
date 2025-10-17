@@ -16,13 +16,13 @@ def train_model(model, train_loader, num_epochs=10):
     # adam optimizer to update weights on gradients with learning rate
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
+    # tracking loss history
+    loss_history = []
+
     # training loop
     for epoch in range(num_epochs):
         model.train() # set model to training model (enables dropuout)
         running_loss = 0.0
-
-        # tracking loss history
-        loss_history = []
 
         # processing data in batches -> 32 images at a time
         for batch_idx, (images, labels) in enumerate(train_loader):
@@ -112,7 +112,6 @@ if __name__ == "__main__":
     # training the model
     print(f"training with {args.epochs} epochs, lr = {args.lr}")
     loss_history = train_model(model, train_loader, num_epochs=args.epochs)
-    train_model(model, train_loader, num_epochs=args.epochs)
 
     # evaluate the model -> testing
     evaluate_model(model, test_loader, device)
@@ -120,6 +119,7 @@ if __name__ == "__main__":
     # saving the model
     save_model(model, args.save_path)
 
+    # plotting the loss curve
     from visualize import plot_loss_curve
     plot_loss_curve(loss_history, save_path="loss_curve.png")
     print(f"training complete")

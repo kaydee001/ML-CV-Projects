@@ -40,4 +40,4 @@ PyTorch • CUDA • torchvision • matplotlib
 
 ---
 
-Built as part of learning neural networks from scratch! 🧠
+Built as part of learning CNNs and neural network fundamentals from scratch! 🧠
