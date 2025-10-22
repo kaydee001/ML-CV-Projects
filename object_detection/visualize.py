@@ -37,6 +37,18 @@ def draw_boxes(image, boxes, img_width, img_height):
 
     return image
 
+def count_objects_by_class(boxes):
+    counts = {'helmet': 0, 'jacket': 0}
+    for box in boxes:
+        class_id = int(box[0])
+        if class_id == 0:
+            counts['helmet'] += 1
+        elif class_id == 1:
+            counts['jacket'] += 1
+
+    return counts
+
+
 if __name__ == "__main__":
     img_path = "data/train/images/helmet_jacket_00039.jpg"
     label_path = "data/train/labels/helmet_jacket_00039.txt"
@@ -48,6 +60,9 @@ if __name__ == "__main__":
 
     fd_mig = draw_boxes(image, boxes, img_width, img_height)
     filename = 'savedimg.jpg'
+
+    counts = count_objects_by_class(boxes)
+    print(f"objects found : {counts['helmet']} helmets, {counts['jacket']} jackets")
 
     cv2.imwrite(filename, fd_mig)
     
