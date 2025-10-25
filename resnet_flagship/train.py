@@ -1,6 +1,8 @@
 import torch 
 import torch.nn as nn
 import torch.optim as optim
+from model import FlowerClassifier
+from data import get_data_loaders
 
 def train_model(model, train_loader, num_epochs=10):
     device = torch.device("cuda" if torch.cuda.is_available else "cpu")
@@ -48,9 +50,11 @@ def evaluate_model(model, test_loader, device):
             labels = labels.to(device)
 
             outputs = model(images)
-            _, predicted = torch.max(outputs, 1)
+            # find max along dimension1 -> class
+            _, predicted = torch.max(outputs, 1) # output.shape -> (batch_size, no_of_classes   )
 
             total += labels.size(0)
+            # .item() to convert it from tensor boolean to python int 
             correct += (predicted == labels).sum().item()
 
         accuracy = 100*correct / total
@@ -61,6 +65,7 @@ def save_model(model, save_path="models/example.pth"):
     import os
 
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    # state_dict() to only save the weights
     torch.save(model.state_dict(), save_path)
     print(f"model saved to {save_path}")
 
@@ -79,8 +84,8 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# model = 
-# train_loader, test_loader = 
+    model = FlowerClassifier(num_classes=102)
+    train_loader, test_loader = get_data_loaders(batch_size=args.batch_size)
 
     loss_history = train_model(model, train_loader, num_epochs=args.epochs)
 
