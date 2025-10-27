@@ -20,8 +20,8 @@ train_transforms = A.Compose([A.Resize(256, 256),
            A.CenterCrop(224, 224),
            A.HorizontalFlip(p=0.5),
            A.Rotate(limit=15, p=0.5),
-           A.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, p=0.3),
-           A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=0.3),
+           A.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.1, hue=0.0, p=0.3),
+           A.RandomBrightnessContrast(brightness_limit=0.25, contrast_limit=0.25, p=0.7),
            A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
            ToTensorV2()])
 
@@ -29,11 +29,6 @@ val_transforms = A.Compose([A.Resize(256, 256),
                             A.CenterCrop(224, 224),
                             A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
                             ToTensorV2()])
-
-# train_transforms = transforms.Compose([transforms.Resize(256), 
-#                                        transforms.CenterCrop(224), 
-#                                        transforms.ToTensor(), 
-#                                        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
 
 def get_class_weights(dataset):
     class_counts = {}

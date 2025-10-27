@@ -6,9 +6,12 @@ from torch.optim.lr_scheduler import CosineAnnealingLR
 from model import FlowerClassifier
 from data import get_data_loaders
 from visualize import plot_loss_history
+from torch.amp import autocast, GradScaler
 
 def train_model(model, train_loader, val_loader, class_weights, num_epochs=10):
     start_time = time.time()
+
+    scaler = GradScaler()
 
     device = torch.device("cuda" if torch.cuda.is_available else "cpu")
     print(f"using device : {device}")
@@ -30,16 +33,18 @@ def train_model(model, train_loader, val_loader, class_weights, num_epochs=10):
         model.train()
         running_loss = 0.0
 
-        for batch_idx, (images, labels) in enumerate(train_loader):
+        for batch_idx, (images, labels) in enumerate(train_loader): 
             images = images.to(device)
             labels = labels.to(device)
 
-            outputs = model(images)
-            loss = criterion(outputs, labels)
+            with autocast(device_type='cuda'):         
+                outputs = model(images)
+                loss = criterion(outputs, labels)
 
             optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
 
             running_loss += loss.item()
 

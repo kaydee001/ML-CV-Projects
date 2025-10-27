@@ -15,7 +15,6 @@ def plot_loss_history(loss_history, val_acc_history, save_path="loss_curve.png")
     ax2.set_ylabel("accuracy (%)")
     ax2.grid(True)
 
-
     plt.tight_layout()
     plt.savefig(save_path)
     print(f"loss plot saved to {save_path}")
