@@ -73,6 +73,10 @@ def evaluate_model(model, test_loader, device):
     correct = 0
     total = 0
 
+    start_test_time = time.time()
+
+    print("testing the model")
+
     with torch.no_grad():
         for images, labels in test_loader:
             images = images.to(device)
@@ -87,7 +91,11 @@ def evaluate_model(model, test_loader, device):
             correct += (predicted == labels).sum().item()
 
         accuracy = 100*correct / total
+
+        end_test_time = time.time()    
+        print(f"testing done, time takem : {end_test_time-start_test_time:.2f}s")
         print(f"test accuracy : {accuracy:.2f}")
+
         return accuracy
 
 def save_model(model, save_path="models/example.pth"):
@@ -114,7 +122,7 @@ if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     model = FlowerClassifier(num_classes=102)
-    train_loader, val_loader, test_loader, class_weights = get_data_loaders(batch_size=args.batch_size)
+    train_loader, val_loader, test_loader, class_weights = get_data_loaders(batch_size=args.batch_size, test_batch_size=128)
 
     loss_history, val_acc_history = train_model(model, train_loader, val_loader, class_weights, num_epochs=args.epochs)
     plot_loss_history(loss_history, val_acc_history, save_path="loss_curve.png")
@@ -122,4 +130,3 @@ if __name__ == "__main__":
     evaluate_model(model, test_loader, device)
 
     save_model(model, args.save_path)
-
