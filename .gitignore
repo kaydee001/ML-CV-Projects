@@ -189,3 +189,8 @@ runs/
 *.jpg
 *.png
 savedimg.jpg
+
+# Training logs
+*.log
+training.log
+training_log

@@ -1,0 +1,24 @@
+model:
+  num_classes: 102
+
+training:
+  epochs: 20
+  batch_size: 32
+  lr: 0.001
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  early_stopping_patience: 3
+
+scheduler:
+  T_max: 20
+  eta_min: 0.00001
+
+data:
+  test_batch_size: 128
+
+logging:
+  log_file: training_log
+
+save:
+  best_model_path: models/best_model.pth
+  final_model_path: models/final_model.pth
