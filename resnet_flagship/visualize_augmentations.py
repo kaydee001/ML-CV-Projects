@@ -4,7 +4,9 @@ from torchvision.datasets import Flowers102
 from data import train_transforms, AlbumentationTransforms
 import numpy as np
 
+# visualing data augmentations
 def visualize_augmentations(num_samples=9):
+    # loading only 1 image from our dataset
     dataset = Flowers102(root="data", split="train", download=True)
     img, label = dataset[0]
 
@@ -13,19 +15,25 @@ def visualize_augmentations(num_samples=9):
     fig, axes = plt.subplots(3, 3, figsize=(12, 12))
     axes = axes.flatten()
 
+    # original image
     axes[0].imshow(img_np)
     axes[0].set_title("original image")
     axes[0].axis("off")
 
+    # showing augmentations
     for i in range(1, num_samples):
+        # applying all the random augmentations
         augmented = train_transforms(image=img_np)
         aug_img = augmented['image']
 
+        # denormalizing -> reversing ImageNet normalization
         mean = torch.tensor([0.485, 0.456, 0.406]).view(3, 1, 1)
         std = torch.tensor([0.229, 0.224, 0.225]).view(3, 1, 1)
         aug_img = aug_img * std + mean
-        aug_img = torch.clamp(aug_img, 0, 1)
-        aug_img = aug_img.permute(1, 2, 0).numpy()
+        aug_img = torch.clamp(aug_img, 0, 1) # clip to valid range
+
+        # converting to height, weight, channels
+        aug_img = aug_img.permute(1, 2, 0).numpy() 
 
         axes[i].imshow(aug_img)
         axes[i].set_title(f"augmented {i}")
