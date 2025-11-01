@@ -4,12 +4,16 @@ import json
 from PIL import Image
 from model import FlowerClassifier
 from torchvision import transforms
+from pathlib import Path
 
 # setting the page title
 st.set_page_config(page_title="flower classifier", page_icon="🌸", layout="centered")
 
 # loading json file which contains list of flower classes
-with open("cat_to_name.json",'r') as f:
+current_dir = Path(__file__).parent
+json_path = current_dir / "cat_to_name.json"
+
+with open(json_path,'r') as f:
     cat_to_name = json.load(f)
 
 st.title("flower species classifier")
