@@ -31,7 +31,10 @@ def load_model():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = FlowerClassifier(num_classes=102)
     # loading the best model
-    checkpoint = torch.load("models/best_model.pth")
+    current_dir = Path(__file__).parent
+    model_path = current_dir / "models" / "best_model.pth"
+
+    checkpoint = torch.load(model_path, map_location=device) # loads gpu-trained model on cpu
     model.load_state_dict(checkpoint)
 
     model.to(device)
