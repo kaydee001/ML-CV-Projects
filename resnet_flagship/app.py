@@ -21,9 +21,20 @@ st.markdown("---")
 
 with st.sidebar:
     st.header("ℹ️ about")
-    st.write("this app classifies flowers in 102 classes using ResNet18 model")
-    st.write("model accuracy : 81% on test set")
-    st.write("may struggle with real world images")
+    st.subheader("🏗️ model architexture")
+    st.write("ResNet18 - transfer learning; pre trained on ImageNet")
+    st.write("fined tuned on final layer only - 102 flower species")
+    
+    st.markdown("---")
+
+    st.subheader("📊 performance")
+    st.write("test set : 81 % accuracy")
+    st.write("real world : variable performance 🥲")
+
+    st.markdown("---")
+
+    st.subheader("⚠️ known limitations")
+    st.write("test set accuracy ≠ real world accuracy")
 
 # using this wrapper; so that the function runs once and stays in the cache
 @st.cache_resource

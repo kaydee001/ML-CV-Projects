@@ -2,9 +2,14 @@
 
 A ResNet18-based classifier using transfer learning to identify 102 flower species. Implements class imbalance handling, data augmentation, mixed precision training, and early stopping for production-ready performance.
 
+**🚀 [Try Live Demo](https://resnetflagship-8jatnx6d22xdntk63jmapx.streamlit.app/)**
+
 ## Results
 
-**Test Accuracy:** 81.49%
+**Test Accuracy:** 81.49% (on controlled test set)
+
+**⚠️ Real-World Performance Note:**  
+The model performs well on images similar to the training distribution (Oxford Flowers-102 dataset) but struggles with real-world photos that have different lighting, angles, or backgrounds. This gap between test accuracy and real-world performance is a common challenge in production ML systems.
 
 ![Training Curves](loss_curve.png)
 
@@ -60,7 +65,8 @@ Output (102 flower species)
 
 ## Tech Stack
 
-PyTorch • torchvision • CUDA • ResNet18 • Transfer Learning • Albumentations • Mixed Precision • Early Stopping • YAML Config
+**Training:** PyTorch • torchvision • CUDA • ResNet18 • Transfer Learning • Albumentations • Mixed Precision  
+**Deployment:** Streamlit • Streamlit Cloud • Pillow
 
 ---
 
