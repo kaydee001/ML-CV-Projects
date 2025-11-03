@@ -1,0 +1,16 @@
+data_dir: "data/"
+image_size: 512
+batch_size: 8
+
+in_channels: 3
+out_channels: 1 # binary mask output
+
+epochs: 20
+learning_rate: 0.001
+weight_decay: 0.01
+
+mixed_precision: True
+gradient_accumulation_steps: 4
+early_stopping_patience: 3
+
+checkpoint_dir: "models/"
